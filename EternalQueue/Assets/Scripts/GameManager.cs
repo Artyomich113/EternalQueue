@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
 	void Start()
     {
 		SpawnGameSlots();
-		
 	}
 	
 
@@ -30,8 +29,6 @@ public class GameManager : MonoBehaviour
 			GameData.DeleteDataFile(gameData.fileName);
 			gameData = null;
 		}
-
-
 		Debug.Log("gamedata deleted " + gameData.fileName);
 	}
 
@@ -41,11 +38,7 @@ public class GameManager : MonoBehaviour
 		gameSlotsView.OnDataClickSelect += OnDataLoaded;
 		gameSlotsView.OnDataClickDelete += OnDataDeleted;
 
-		string[] files = Directory.GetFiles(Application.persistentDataPath + "Assets/Data/GameSlots/");
+		string[] files = Directory.GetFiles(Application.dataPath + "/Data/GameSlots");
 		gameSlotsView.LoadGameSlots(files);
-		
 	}
-
-
-
 }

@@ -8,7 +8,7 @@ public class GameSlot : MonoBehaviour, IPointerClickHandler
 	[HideInInspector]
 	public GameData gameData = null;
 
-	public GameSlotDeleteView gameSlotDeleteView;
+	public Button gameSlotDeleteView;
 	public Text FileNameText;
 
 	public Action<GameData> onDataClickSelect;
@@ -29,9 +29,7 @@ public class GameSlot : MonoBehaviour, IPointerClickHandler
 
 	private void Start()
 	{
-		gameSlotDeleteView.OnClickDelete += OnDataClickDelete;
-	
+		gameSlotDeleteView.onClick.AddListener(OnDataClickDelete);
 		FileNameText.text = gameData?.fileName;
 	}
 }
-

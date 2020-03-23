@@ -6,10 +6,10 @@
 		_Color("Color",color) = (1,1,1,1)
 		_StencilComp("Stencil Comparison", Float) = 8
         _Stencil("Stencil ID", Float) = 0
-       _StencilOp("Stencil Operation", Float) = 0
-       _StencilWriteMask("Stencil Write Mask", Float) = 255
-       _StencilReadMask("Stencil Read Mask", Float) = 255
-       _ColorMask("Color Mask", Float) = 15
+	    _StencilOp("Stencil Operation", Float) = 0
+        _StencilWriteMask("Stencil Write Mask", Float) = 255
+        _StencilReadMask("Stencil Read Mask", Float) = 255
+        _ColorMask("Color Mask", Float) = 15
 	}
 		SubShader
 		{
@@ -39,7 +39,6 @@
 				};
 
 				sampler2D _MainTex;
-				float4 _MainTex_ST;
 				float4 _Color;
 
 				v2f vert(appdata v)
