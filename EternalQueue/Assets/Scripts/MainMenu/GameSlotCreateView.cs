@@ -12,11 +12,12 @@ public class GameSlotCreateView : MonoBehaviour, IPointerClickHandler
 
 	private void Start()
 	{
-		SlotName.text = "Gay Game for Gaymers";
+		SlotName.text = "Gamers Game for Gaymers";
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
+		Debug.Log("GameSlotCreateView click");
 		OnGameSlotClickCreate?.Invoke(SlotName.text);
 	}
 	

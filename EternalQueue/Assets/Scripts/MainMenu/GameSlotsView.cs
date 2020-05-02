@@ -27,13 +27,22 @@ public class GameSlotsView : MonoBehaviour
 		returnButton.onClick.AddListener(onReturnClick);
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			onReturnClick();
+		}
+	}
+
 	public void onReturnClick()
 	{
-		Destroy(this);
+		gameObject.SetActive(false);
 	}
 
 	public void OnDataDelete(GameData gameData)
 	{
+		Debug.Log("OnDataDelete");
 		OnDataClickDelete?.Invoke(gameData);
 	}
 
@@ -44,12 +53,15 @@ public class GameSlotsView : MonoBehaviour
 
 	public void OnDataCreate(string name)
 	{
-		
+		Debug.Log("OnDataCreate");
+		OnDataClickCreate?.Invoke(name);
 	}
 
 	public void CreateGameDataSlot(GameData gameData)
 	{
-		GameSlot gameslot = Instantiate(gameSlotView, content);
+		Debug.Log("CreateGameDataSlot " + gameData.fileName);
+
+		GameSlot gameslot = Instantiate(gameSlotView, content.transform);
 		gameslot.gameData = gameData;
 		gameslot.onDataClickDelete += OnDataDelete;
 		gameslot.onDataClickSelect += OnDataSelect;
@@ -60,8 +72,9 @@ public class GameSlotsView : MonoBehaviour
 		foreach (var str in files)
 		{
 			GameData gameData = GameData.Load(str);
-			GameSlot localGameSlot = Instantiate(gameSlotView, content.transform);
-			localGameSlot.gameData = gameData;
+			//GameSlot localGameSlot = Instantiate(gameSlotView, content.transform);
+			//localGameSlot.gameData = gameData;
+			CreateGameDataSlot(gameData);
 		}
 
 		GameSlotCreateView localgameSlotCreateView = Instantiate(gameSlotCreateView, content.transform);

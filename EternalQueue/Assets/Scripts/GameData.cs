@@ -19,10 +19,21 @@ public class GameData
 		fileName = name;
 	}
 
+	public GameData()
+	{
+		fileName = "";
+	}
+
 	public static void CreateDataFile(string name)
 	{
 		string json = JsonUtility.ToJson(new GameData(name));
-		using (StreamWriter stream = new StreamWriter(Application.persistentDataPath + "Assets/Data/GameSlots/" + name))
+
+		if (!Directory.Exists(Application.persistentDataPath + "/gameSlots"))
+		{
+			Directory.CreateDirectory(Application.persistentDataPath + "/gameSlots");
+		}
+
+		using (StreamWriter stream = new StreamWriter(Application.persistentDataPath + "/gameSlots/" + name))
 		{
 			stream.Write(json);
 		}
@@ -30,26 +41,32 @@ public class GameData
 
 	public static void DeleteDataFile(string name)
 	{
-		if(File.Exists(Application.persistentDataPath + "Assets/Data/GameSlots/" + name))
+		
+		if (File.Exists(Application.persistentDataPath + "/gameSlots/" + name))
 		{
-			File.Delete(Application.persistentDataPath + "Assets/Data/GameSlots/" + name);
+			File.Delete(Application.persistentDataPath + "/gameSlots/" + name);
 		}
 	}
 
-	public void Save()
+	public static void Save(GameData gameData)
 	{
-		string json = JsonUtility.ToJson(this);
-		using (StreamWriter stream = new StreamWriter(Application.persistentDataPath + "Assets/Data/GameSlots/" + fileName))
+		string json = JsonUtility.ToJson(gameData);
+		if(!Directory.Exists(Application.persistentDataPath + "/gameSlots"))
+		{
+			Directory.CreateDirectory(Application.persistentDataPath + "/gameSlots");
+		}
+
+		using (StreamWriter stream = new StreamWriter(Application.persistentDataPath + "/gameSlots/" +gameData.fileName))
 		{
 			stream.Write(json);
 		}
 	}
 
-	public static GameData Load(string name)
+	public static GameData Load(string Path)
 	{
-		GameData data = new GameData(name);
+		GameData data = new GameData();
 
-		using (StreamReader stream = new StreamReader(Application.persistentDataPath + "Assets/Data/GameSlots/" + name))
+		using (StreamReader stream = new StreamReader(Path))
 		{
 
 			string json = stream.ReadToEnd();
