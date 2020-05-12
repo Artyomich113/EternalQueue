@@ -5,9 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-class Box : MonoBehaviour, IInteractive
-{
+class Box : PooledObject, IInteractive
+{	
+
 	public List<Entity> items;
+	
+	public MeshRenderer meshRenderer;
+
+	[HideInInspector]
+	public Material material;
+
+	private void Awake()
+	{
+		material = meshRenderer.material;
+
+		material.SetColor("_Color", Color.red);
+	}
+
+	public void SetSize(float wight, float height)
+	{	
+		transform.localScale = new Vector3(wight, height, 1);
+	}
 
 	public void ItemPlaced(Entity item)//mouseUp. Controled in ClickSelectController.
 	{

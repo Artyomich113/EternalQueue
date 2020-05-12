@@ -298,4 +298,4 @@ MonoBehaviour:
     money: 0
     mistrust: 0
   gameSlotDeleteView: {fileID: 2388439133250994472}
-  FileNameText: {fileID: 443921609262682119}
+  fileNameText: {fileID: 443921609262682119}

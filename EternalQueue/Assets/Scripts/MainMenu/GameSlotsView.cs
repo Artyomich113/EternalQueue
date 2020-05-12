@@ -24,25 +24,25 @@ public class GameSlotsView : MonoBehaviour
 
 	private void Start()
 	{
-		returnButton.onClick.AddListener(onReturnClick);
+		returnButton.onClick.AddListener(OnReturnClick);
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			onReturnClick();
+			OnReturnClick();
 		}
 	}
 
-	public void onReturnClick()
+	public void OnReturnClick()
 	{
 		gameObject.SetActive(false);
 	}
 
 	public void OnDataDelete(GameData gameData)
 	{
-		Debug.Log("OnDataDelete");
+		//Debug.Log("OnDataDelete");
 		OnDataClickDelete?.Invoke(gameData);
 	}
 
@@ -53,13 +53,13 @@ public class GameSlotsView : MonoBehaviour
 
 	public void OnDataCreate(string name)
 	{
-		Debug.Log("OnDataCreate");
+		//Debug.Log("OnDataCreate");
 		OnDataClickCreate?.Invoke(name);
 	}
 
 	public void CreateGameDataSlot(GameData gameData)
 	{
-		Debug.Log("CreateGameDataSlot " + gameData.fileName);
+		//Debug.Log("CreateGameDataSlot " + gameData.fileName);
 
 		GameSlot gameslot = Instantiate(gameSlotView, content.transform);
 		gameslot.gameData = gameData;

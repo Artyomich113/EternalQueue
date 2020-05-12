@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using UIScripts;
 
 public class MainMenuManager : MonoBehaviour
 {
+	GameLogic gameLogic;
 
 	public Image backGrowndImage;
 	public MainMenu mainMenu;
@@ -15,17 +17,47 @@ public class MainMenuManager : MonoBehaviour
 	MainMenu mainMenuInstance;
 	GameSlotsView GameSlotsViewInstace;
 
+	public Slider mistrustSlider;
+	readonly string format = "{0:0.#}";
+	public Text mistrustText;
+
+	public Gold gold;
+
+	public Timer timer;
+
+	public RectTransform inGameUI;
+
 	void Start()
 	{
 		SpawnGameSlots();
 		SpawnMainMenu();
 		mainMenuInstance?.gameObject.SetActive(false);
+
+		gameLogic = new GameLogic()
+		{
+			timer = timer,
+		};
+		timer.onTimeOut += gameLogic.OnTimeUp;
 	}
 
 	public void StartGame() //вызов запуск игры
 	{
 		mainMenuInstance?.gameObject.SetActive(false);
 		backGrowndImage?.gameObject.SetActive(false);
+
+		inGameUI.gameObject.SetActive(true);
+		
+	}
+
+	public void OnUpdateMisstrust(float val)
+	{
+		mistrustSlider.value = val;
+		mistrustText.text = string.Format(format, val) + '%';
+	}
+
+	public void OnUpdateGold(int val)
+	{
+		gold.text.text = val.ToString();
 	}
 
 	#region Data managment
@@ -34,6 +66,9 @@ public class MainMenuManager : MonoBehaviour
 	{
 		GameLogic.gameData = gameData;
 		Debug.Log("gamedata loaded " + gameData.fileName);
+
+		GameSlotsViewInstace.gameObject.SetActive(false);
+		mainMenuInstance.gameObject.SetActive(true);
 	}
 
 	public void OnDataDeleted(GameData gameData)
