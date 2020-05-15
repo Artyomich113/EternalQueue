@@ -9,7 +9,10 @@ public class PoolManager : MonoBehaviour
 {
 	public static PoolManager instanse;
 
+
 	public Objectpool boxPool;
+	public Objectpool guyPool;
+	public Objectpool entityPool;
 
 	private void Awake()
 	{

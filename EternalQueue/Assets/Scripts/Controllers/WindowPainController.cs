@@ -10,7 +10,12 @@ public class WindowPainController : MonoBehaviour
 	public Transform stayTransform;
 	public Transform finaleTransform;
 
-	public Transform target;
+	PooledObject target;
+
+	private void Start()
+	{
+		target = PoolManager.instanse.guyPool.Get();
+	}
 
 	private void OnDrawGizmos()
 	{
@@ -27,24 +32,24 @@ public class WindowPainController : MonoBehaviour
 
 	public void MoveToWindow()
 	{
-		target.position = startTransform.position;
-		target.rotation = startTransform.rotation;
+		target.transform.position = startTransform.position;
+		target.transform.rotation = startTransform.rotation;
 
 		Sequence sequence = DOTween.Sequence();
 
-		sequence.Append(target.DOMove(stayTransform.position, 1f));
-		sequence.Insert(0.85f, target.DORotateQuaternion(stayTransform.rotation, 0.25f));
+		sequence.Append(target.transform.DOMove(stayTransform.position, 1f));
+		sequence.Insert(0.85f, target.transform.DORotateQuaternion(stayTransform.rotation, 0.25f));
 	}
 
 	public void MoveFromWindow()
 	{
-		target.position = stayTransform.position;
-		target.rotation = stayTransform.rotation;
+		target.transform.position = stayTransform.position;
+		target.transform.rotation = stayTransform.rotation;
 
 		Sequence sequence = DOTween.Sequence();
 
-		sequence.Append(target.DORotateQuaternion(finaleTransform.rotation, 0.25f));
-		sequence.Append(target.DOMove(finaleTransform.position, 1f));
+		sequence.Append(target.transform.DORotateQuaternion(finaleTransform.rotation, 0.25f));
+		sequence.Append(target.transform.DOMove(finaleTransform.position, 1f));
 	}
 
 }
