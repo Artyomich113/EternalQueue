@@ -27,6 +27,8 @@ public class MainMenuManager : MonoBehaviour
 
 	public RectTransform inGameUI;
 
+	public WindowPainController windowPainController;
+
 	void Start()
 	{
 		SpawnGameSlots();
