@@ -19,6 +19,7 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
+    m_TexEnvs:
     - Texture2D_7052ACD1:
         m_Texture: {fileID: 2800000, guid: 78a59ca99f8987941adb61f9e14a06a7, type: 3}
         m_Scale: {x: 1, y: 1}
