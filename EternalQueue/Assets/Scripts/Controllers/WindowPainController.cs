@@ -32,6 +32,11 @@ public class WindowPainController : MonoBehaviour
 
 	public void MoveToWindow()
 	{
+		if (DOTween.IsTweening(target.transform))
+		{
+			return;
+		}
+
 		target.transform.position = startTransform.position;
 		target.transform.rotation = startTransform.rotation;
 
@@ -43,6 +48,11 @@ public class WindowPainController : MonoBehaviour
 
 	public void MoveFromWindow()
 	{
+		if (DOTween.IsTweening(target.transform))
+		{
+			return;
+		}
+
 		target.transform.position = stayTransform.position;
 		target.transform.rotation = stayTransform.rotation;
 
