@@ -22,7 +22,7 @@ class Box : PooledObject, IInteractive
 
     public void SetColor(Color color)
     {
-        Debug.Log(color);
+        //Debug.Log(color);
         material.SetColor("_Color", color);
     }
 

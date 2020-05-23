@@ -5,38 +5,18 @@ using System.IO;
 using UnityEngine.UI;
 using UIScripts;
 
-public class MainMenuManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     GameLogic gameLogic;
 
-    public Image backGrowndImage;
-
-    public MainMenu mainMenu;
-
-    public GameSlotsView gameSlots;
-    public Canvas mainCanvas;
+    public UIManager uIManager;
 
     MainMenu mainMenuInstance;
     GameSlotsView GameSlotsViewInstace;
 
-    public Slider mistrustSlider;
-    readonly string format = "{0:0.#}";
-    public Text mistrustText;
+    public CameraWorldCordConverter converter;
 
-    public Gold gold;
-
-    public Timer timer;
-
-    public RectTransform inGameUI;
-
-    public WindowPainController windowPainController;
-
-    public Button submit;
-
-    public delegate void moveGuyDelegate();
-
-    moveGuyDelegate[] moveGuyDelegates;
-    int movecount = 0;
+    public GameItems gameItems;
 
     void Start()
     {
@@ -46,42 +26,38 @@ public class MainMenuManager : MonoBehaviour
 
         gameLogic = new GameLogic()
         {
-            timer = timer,
-            mainMenuManager = this,
+            timer = uIManager.timer,
+            gameManager = this,
         };
-        timer.onTimeOut += gameLogic.OnTimeUp;
+        uIManager.timer.onTimeOut += gameLogic.OnTimeUp;
 
-        moveGuyDelegates = new moveGuyDelegate[2]
-        {
-            windowPainController.MoveFromWindow,
-            windowPainController.MoveToWindow,
-        };
+        
     }
 
     public void ChangeGuy()
     {
-        //submit.onClick.RemoveAllListeners()
+        
     }
 
     public void StartGame() //вызов запуск игры
     {
         mainMenuInstance?.gameObject.SetActive(false);
-        backGrowndImage?.gameObject.SetActive(false);
+        uIManager.backGrowndImage?.gameObject.SetActive(false);
 
-        inGameUI.gameObject.SetActive(true);
+        uIManager.inGameUI.gameObject.SetActive(true);
         gameLogic.Init();
 
     }
 
     public void OnUpdateMisstrust(float val)
     {
-        mistrustSlider.value = val;
-        mistrustText.text = string.Format(format, val) + '%';
+        uIManager.mistrustSlider.value = val;
+        uIManager.mistrustText.text = string.Format(uIManager.format, val) + '%';
     }
 
     public void OnUpdateGold(int val)
     {
-        gold.text.text = val.ToString();
+        uIManager.gold.text.text = val.ToString();
     }
 
     #region Data managment
@@ -118,7 +94,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void SpawnGameSlots() // инициализация загрузки сохранений
     {
-        GameSlotsViewInstace = Instantiate(gameSlots, mainCanvas.transform);
+        GameSlotsViewInstace = Instantiate(uIManager.gameSlots, uIManager.mainCanvas.transform);
 
         GameSlotsViewInstace.OnDataClickSelect += OnDataLoaded;
         GameSlotsViewInstace.OnDataClickDelete += OnDataDeleted;
@@ -135,28 +111,27 @@ public class MainMenuManager : MonoBehaviour
         }
 
         GameSlotsViewInstace.LoadGameSlots(files);
-        }
-
-        public void SpawnMainMenu() // инициализация главного меню
-        {
-            mainMenuInstance = Instantiate(mainMenu, mainCanvas.transform);
-
-            mainMenuInstance.playGame.onClick.AddListener(StartGame);
-            mainMenuInstance.loadGame.onClick.AddListener(LoadGame);
-        }
-
-        public void LoadGame() // вызов загрузки сохранений
-        {
-            GameSlotsViewInstace.gameObject.SetActive(true);
-            mainMenuInstance.gameObject.SetActive(false);
-        }
-
-        public void MainMenu() // вызов главного меню
-        {
-            mainMenuInstance?.gameObject.SetActive(true);
-            backGrowndImage?.gameObject.SetActive(true);
-        }
-
-        #endregion
-
     }
+
+    public void SpawnMainMenu() // инициализация главного меню
+    {
+        mainMenuInstance = Instantiate(uIManager.mainMenu, uIManager.mainCanvas.transform);
+
+        mainMenuInstance.playGame.onClick.AddListener(StartGame);
+        mainMenuInstance.loadGame.onClick.AddListener(LoadGame);
+    }
+
+    public void LoadGame() // вызов загрузки сохранений
+    {
+        GameSlotsViewInstace.gameObject.SetActive(true);
+        mainMenuInstance.gameObject.SetActive(false);
+    }
+
+    public void MainMenu() // вызов главного меню
+    {
+        mainMenuInstance?.gameObject.SetActive(true);
+        uIManager.backGrowndImage?.gameObject.SetActive(true);
+    }
+
+    #endregion
+}
