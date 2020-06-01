@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-class Box : PooledObject, IInteractive
+public class Box : PooledObject, IInteractive
 {
 
     public List<Entity> items;
@@ -65,7 +65,7 @@ class Box : PooledObject, IInteractive
 
     }
 
-    public void OnUp()
+    public void OnUp(Box box)
     {
 
     }

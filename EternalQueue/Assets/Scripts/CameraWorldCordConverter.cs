@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Artyomich;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,18 +29,18 @@ public class CameraWorldCordConverter : MonoBehaviour
     private void Awake()
     {
         frontDist = Math.Abs(cameraRef.transform.position.z);
-        Debug.Log("frontDist " + frontDist);
+       // Debug.Log("frontDist " + frontDist);
         angle = cameraRef.fieldOfView;
         aspect = cameraRef.aspect;
 
         zeroHeight = frontDist * Mathf.Tan(angle / 2 * Mathf.Deg2Rad) * 2;
-        Debug.Log("zeroHeight " + zeroHeight);
+       // Debug.Log("zeroHeight " + zeroHeight);
         zeroWight = zeroHeight * aspect;
-        Debug.Log("zerowight " + zeroWight);
+       // Debug.Log("zerowight " + zeroWight);
 
         bLCorner = new Vector3(-zeroWight / 2, -zeroHeight / 2, 0);
-        Debug.Log("corner " + bLCorner);
-        Debug.Log("topRight " + (bLCorner + new Vector3(zeroWight, zeroHeight, 0f)));
+        //Debug.Log("corner " + bLCorner);
+        //Debug.Log("topRight " + (bLCorner + new Vector3(zeroWight, zeroHeight, 0f)));
 
     }
 
@@ -67,5 +68,15 @@ public class CameraWorldCordConverter : MonoBehaviour
     {
         Vector3 vector3 = new Vector3(Mathf.InverseLerp(-frontDist, 0, scale.z) * scale.x * zeroWight, Mathf.InverseLerp(-frontDist, 0, scale.z) * scale.y * zeroHeight, scale.z);
         return vector3;
+    }
+
+    public Vector3 RandomPositionInSquare(Transform obTransform, float zOffset = 0f)
+    {
+        Vector3 bottomLeft = obTransform.position - (obTransform.localScale / 2).SetZ(0f);
+
+        float height = UnityEngine.Random.Range(0, obTransform.localScale.y);
+        float wight = UnityEngine.Random.Range(0, obTransform.localScale.x);
+
+        return bottomLeft + new Vector3(wight, height, zOffset);
     }
 }

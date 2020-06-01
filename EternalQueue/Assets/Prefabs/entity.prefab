@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8377063109753076448}
   - component: {fileID: 2383763295056456215}
   - component: {fileID: 3512526288438060929}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: entity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,3 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectpool: {fileID: 0}
+  item:
+    name: 
+    weight: 0
+  MeshRenderer: {fileID: 8377063109753076448}

@@ -7,5 +7,5 @@ using UnityEngine;
 public class ItemData
 {
     public string name;
-    public Texture2D texture2D;
+    public Sprite sprite;
 }

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 [Serializable]
-class Item
+public class Item
 {
-	public string type;
+	public string name;
 	public float weight;
 }
 

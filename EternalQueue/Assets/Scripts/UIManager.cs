@@ -28,4 +28,7 @@ public class UIManager : MonoBehaviour
     public WindowPainController windowPainController;
 
     public Button submit;
+
+
+    public DropDownView dropDownView;
 }

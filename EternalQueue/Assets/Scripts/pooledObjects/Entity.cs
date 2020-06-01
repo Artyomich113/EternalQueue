@@ -1,11 +1,28 @@
-﻿using System;
+﻿using Artyomich;
+using System;
 using UnityEngine;
 
 
 public class Entity : PooledObject, IInteractive
 {
-	Item item;
+	[HideInInspector]
+	public Item item;
+
+	public MeshRenderer MeshRenderer;
+
+	Material material;
+
+	private void Awake()
+	{
+		material = MeshRenderer.material;
+	}
+	public void SetTexture(Texture2D texture2D)
+	{
+		material.SetTexture("_MainTex",texture2D);
+	}
+
 	Vector3 offset;
+	Vector3 preDragPos;
 
 	public Action<Entity> onItemRelesed;
 
@@ -16,21 +33,30 @@ public class Entity : PooledObject, IInteractive
 
 	public void OnDown(Vector3 pos)
 	{
-		offset = pos - transform.position;
-		Debug.Log("OnDown " + offset);
+		preDragPos = transform.position;
+
+		offset = transform.position - pos;
+		Debug.Log($"OnDown tran {transform.position} pos {pos} offset {offset}");
 	}
 
 	public void OnHold(Vector3 pos)
 	{
-		transform.position = pos - offset;
+		transform.position = (pos + offset).SetZ(transform.position.z);
 		Debug.Log("OnHold " + pos);
 	}
 
-	public void OnUp()// отпуск клавиши
+	public void OnUp(Box box)// отпуск клавиши
 	{
 		offset = Vector3.zero;
-
-		onItemRelesed?.Invoke(this);
+		if (box)
+		{
+			onItemRelesed?.Invoke(this);
+			box.ItemPlaced(this);
+		}
+		else
+		{
+			transform.position = preDragPos;
+		}
 		Debug.Log("OnUp");
 	}
 }

@@ -11,7 +11,7 @@ public interface IInteractive
 	void OnHold(Vector3 pos);
 
 	//mouseUp
-	void OnUp();
+	void OnUp(Box box);
 
 	// mouseDown
 	void OnDown(Vector3 pos);

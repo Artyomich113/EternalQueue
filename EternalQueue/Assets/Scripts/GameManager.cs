@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
             gameManager = this,
         };
         uIManager.timer.onTimeOut += gameLogic.OnTimeUp;
-
         
     }
 
@@ -45,7 +44,9 @@ public class GameManager : MonoBehaviour
         uIManager.backGrowndImage?.gameObject.SetActive(false);
 
         uIManager.inGameUI.gameObject.SetActive(true);
+
         gameLogic.Init();
+        gameLogic.DayStart();
 
     }
 
