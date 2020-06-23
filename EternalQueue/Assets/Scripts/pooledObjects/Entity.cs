@@ -36,13 +36,13 @@ public class Entity : PooledObject, IInteractive
 		preDragPos = transform.position;
 
 		offset = transform.position - pos;
-		Debug.Log($"OnDown tran {transform.position} pos {pos} offset {offset}");
+		//Debug.Log($"OnDown tran {transform.position} pos {pos} offset {offset}");
 	}
 
 	public void OnHold(Vector3 pos)
 	{
 		transform.position = (pos + offset).SetZ(transform.position.z);
-		Debug.Log("OnHold " + pos);
+		//Debug.Log("OnHold " + pos);
 	}
 
 	public void OnUp(Box box)// отпуск клавиши
@@ -57,6 +57,6 @@ public class Entity : PooledObject, IInteractive
 		{
 			transform.position = preDragPos;
 		}
-		Debug.Log("OnUp");
+		//Debug.Log("OnUp");
 	}
 }

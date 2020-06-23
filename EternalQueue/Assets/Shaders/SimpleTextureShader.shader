@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Color("Color", color) = (1,1,1,1)
     }
     SubShader
     {
@@ -31,6 +32,8 @@
                 float4 vertex : SV_POSITION;
             };
 
+            
+            float4 _Color;
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
@@ -39,13 +42,23 @@
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv); 
-                return col;
+                fixed4 col = tex2D(_MainTex, i.uv);
+
+            //return (col.z, col.z, col.z, 1);
+
+            if (col.z == 0.0f)
+            {
+                return (0, 0, 0, 1);
+                //discard;
+            }
+            
+                return col * _Color;
             }
             ENDCG
         }

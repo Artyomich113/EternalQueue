@@ -14,20 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - name: animals
-    sprite: {fileID: 21300000, guid: cccb3beffa68189439aa13ccc42b55ad, type: 3}
+    texture: {fileID: 2800000, guid: cccb3beffa68189439aa13ccc42b55ad, type: 3}
+    id: 0
   - name: books
-    sprite: {fileID: 21300000, guid: f93b12c9d8a5de64c9ef1ab33343db10, type: 3}
+    texture: {fileID: 2800000, guid: f93b12c9d8a5de64c9ef1ab33343db10, type: 3}
+    id: 1
   - name: clothes
-    sprite: {fileID: 21300000, guid: 06b0743465b818144b800a1e03f665eb, type: 3}
+    texture: {fileID: 2800000, guid: 06b0743465b818144b800a1e03f665eb, type: 3}
+    id: 2
   - name: fuel
-    sprite: {fileID: 21300000, guid: 9b6acfa414346904eb04bbfebb4bacc6, type: 3}
+    texture: {fileID: 2800000, guid: 9b6acfa414346904eb04bbfebb4bacc6, type: 3}
+    id: 3
   - name: guns
-    sprite: {fileID: 21300000, guid: 6ebceafb1a9be674fa02d77114285c66, type: 3}
+    texture: {fileID: 2800000, guid: 6ebceafb1a9be674fa02d77114285c66, type: 3}
+    id: 4
   - name: furnityre
-    sprite: {fileID: 21300000, guid: 0c9692a8afb556e40a87b4050b4ac53b, type: 3}
+    texture: {fileID: 2800000, guid: 0c9692a8afb556e40a87b4050b4ac53b, type: 3}
+    id: 5
   - name: toys
-    sprite: {fileID: 21300000, guid: 7493659e0e9343b4c8ba4898d057ad1c, type: 3}
+    texture: {fileID: 2800000, guid: 7493659e0e9343b4c8ba4898d057ad1c, type: 3}
+    id: 6
   - name: veggies
-    sprite: {fileID: 21300000, guid: 95a35bd3eb14ae04d968aa1a6cf4bad0, type: 3}
+    texture: {fileID: 2800000, guid: 95a35bd3eb14ae04d968aa1a6cf4bad0, type: 3}
+    id: 7
   - name: tech
-    sprite: {fileID: 21300000, guid: 4e59401ec84bc964b9002897beba0ebd, type: 3}
+    texture: {fileID: 2800000, guid: 4e59401ec84bc964b9002897beba0ebd, type: 3}
+    id: 8

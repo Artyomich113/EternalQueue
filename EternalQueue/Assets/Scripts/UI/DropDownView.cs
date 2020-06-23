@@ -20,13 +20,19 @@ public class DropDownView : MonoBehaviour, IDragHandler
 
     public Objectpool itemViewPool;
 
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.W))
+    //        scrollRect.verticalNormalizedPosition = 0.0f;
+
+    //    if (Input.GetKeyDown(KeyCode.S))
+    //        scrollRect.verticalNormalizedPosition = 1.0f;
+
+    //}
+
     private void Awake()
     {
         dropDownButton.onClick.AddListener(OnButtonClick);
-    }
-    private void Start()
-    {
-
     }
 
     public void OnButtonClick()
@@ -34,7 +40,7 @@ public class DropDownView : MonoBehaviour, IDragHandler
         scrollRect.gameObject.SetActive(!scrollRect.gameObject.activeSelf);
     }
 
-    public void GenerateListView()
+    public void GenerateListView(UIManager uIManager)
     {
         foreach (var itemview in itemViews)
         {
@@ -46,15 +52,14 @@ public class DropDownView : MonoBehaviour, IDragHandler
         {
             ItemView itemView = itemViewPool.Get() as ItemView;
             itemView.text.text = itemData.name;
-            itemView.image.sprite = itemData.sprite;
+            itemView.image.sprite = uIManager.entitySprites[itemData.id];
 
             itemViews.Add(itemView);
 
             itemView.transform.SetParent(verticalLayoutGroup.transform);
         }
 
-        scrollRect.verticalNormalizedPosition = 1f;
-        
+        scrollRect.verticalNormalizedPosition = 1.0f;
     }
 
     public void OnDrag(PointerEventData eventData)

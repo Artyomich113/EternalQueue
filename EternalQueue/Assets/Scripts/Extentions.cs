@@ -9,7 +9,20 @@ namespace Artyomich
 
     public static class Extentions
     {
-
+        /// <summary>
+        /// helps to safely go to float without itteration 
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="substraction"></param>
+        /// <returns></returns>
+        public static float GoToFloat(this float val, float substraction)
+        {
+            if (substraction > val)
+            {
+                return val;
+            }
+            else return substraction;
+        }
         public static bool IsInside(this Vector2 pos, Rect rect)
         {
             return pos.x.IsBetween(rect.x, rect.x + rect.width) && pos.y.IsBetween(rect.y, rect.y + rect.height);

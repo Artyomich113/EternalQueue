@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 using UIScripts;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        uIManager.entitySprites = new Sprite[gameItems.items.Length];
+        for (int i = 0; i < gameItems.items.Length; i++)
+        {
+            Texture2D tex = gameItems.items[i].texture;
+            uIManager.entitySprites[i] = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+        }
+
         SpawnGameSlots();
         SpawnMainMenu();
         mainMenuInstance?.gameObject.SetActive(false);
@@ -29,19 +37,30 @@ public class GameManager : MonoBehaviour
             timer = uIManager.timer,
             gameManager = this,
         };
+
+
+
         uIManager.timer.onTimeOut += gameLogic.OnTimeUp;
+        uIManager.submit.onClick.AddListener(gameLogic.PassTheCar);
         
+        uIManager.nextDay.onClick.AddListener(NextDayHandler);
+        uIManager.nextDay.onClick.AddListener(gameLogic.DailyUpdate);
+
+        void NextDayHandler()
+        {
+            uIManager.nextDay.gameObject.SetActive(false);
+        };
     }
 
     public void ChangeGuy()
     {
-        
+
     }
 
     public void StartGame() //вызов запуск игры
     {
         mainMenuInstance?.gameObject.SetActive(false);
-        uIManager.backGrowndImage?.gameObject.SetActive(false);
+        //uIManager.backGrowndImage?.gameObject.SetActive(false);
 
         uIManager.inGameUI.gameObject.SetActive(true);
 
@@ -50,11 +69,11 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void OnUpdateMisstrust(float val)
-    {
-        uIManager.mistrustSlider.value = val;
-        uIManager.mistrustText.text = string.Format(uIManager.format, val) + '%';
-    }
+    //public void OnUpdateMisstrust(float val)
+    //{
+    //    uIManager.mistrustSlider.value = val;
+    //    uIManager.mistrustText.text = string.Format(uIManager.format, val) + '%';
+    //}
 
     public void OnUpdateGold(int val)
     {
@@ -66,7 +85,7 @@ public class GameManager : MonoBehaviour
     public void OnDataLoaded(GameData gameData)
     {
         GameLogic.gameData = gameData;
-        Debug.Log("gamedata loaded " + gameData.fileName);
+        Debug.Log("gamedata loaded: " + gameData.fileName);
 
         GameSlotsViewInstace.gameObject.SetActive(false);
         mainMenuInstance.gameObject.SetActive(true);
@@ -131,7 +150,7 @@ public class GameManager : MonoBehaviour
     public void MainMenu() // вызов главного меню
     {
         mainMenuInstance?.gameObject.SetActive(true);
-        uIManager.backGrowndImage?.gameObject.SetActive(true);
+        //uIManager.backGrowndImage?.gameObject.SetActive(true);
     }
 
     #endregion

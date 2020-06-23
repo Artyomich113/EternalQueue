@@ -6,18 +6,15 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public Image backGrowndImage;
+    //public Image backGrowndImage;
 
     public MainMenu mainMenu;
 
     public GameSlotsView gameSlots;
+
     public Canvas mainCanvas;
 
-    public Slider mistrustSlider;
-
-    public readonly string format = "{0:0.#}";
-
-    public Text mistrustText;
+    public Misstrust misstrust;
 
     public Gold gold;
 
@@ -29,6 +26,10 @@ public class UIManager : MonoBehaviour
 
     public Button submit;
 
-
     public DropDownView dropDownView;
+
+    public Button nextDay;
+
+    [HideInInspector]
+    public Sprite[] entitySprites;
 }

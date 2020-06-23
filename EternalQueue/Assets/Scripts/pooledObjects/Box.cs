@@ -41,6 +41,14 @@ public class Box : PooledObject, IInteractive
 
     }
 
+    public void Clear()
+    {
+        foreach(var item in items)
+        {
+            item.ReturnToPool();
+        }
+        items.RemoveRange(0, items.Count);
+    }
     public void ItemRelesed(Entity item)//mouseUp. Controlled under item's Action<Item> onItemRelesed.
     {
         if (items.Contains(item))

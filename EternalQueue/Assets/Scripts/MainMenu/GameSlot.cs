@@ -19,7 +19,7 @@ public class GameSlot : MonoBehaviour, IPointerClickHandler
 	{
 		if(gameData != null)
 		{
-			Debug.Log("Select");
+			Debug.Log("Select game slot");
 			onDataClickSelect?.Invoke(gameData);
 		}
 	}

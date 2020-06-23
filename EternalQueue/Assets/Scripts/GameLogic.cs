@@ -24,11 +24,19 @@ public class GameLogic
 
     Dictionary<string, ItemData> itemDataByName = new Dictionary<string, ItemData>();
 
+    Action onDayEnd;
+
+    Action onLose;
+
     /// <summary>
     /// value beetwen 0 and 1
     /// </summary>
+
+    int day = 0;
     float mistrust = 0f;
-    int gold = 500;
+    float hidenMistrust = 0f;
+
+    float gold = 500f;
 
 
     int brabeGold = 200;
@@ -44,7 +52,9 @@ public class GameLogic
 
     bool isPlaying;
 
-    float time = 600;
+    float time = 60;
+
+
 
     public void CheckItems(List<Entity> bribeItems, List<Entity> passedItems, List<Entity> confiscatedItems)
     {
@@ -54,7 +64,7 @@ public class GameLogic
             if (bannedItems.Any(p => p.name == ob.name))
             {
                 gold += brabeGold;
-                mistrust = Mathf.Clamp(mistrust + brabeMistrust, 0f, 1.1f); ;
+                hidenMistrust += brabeMistrust;
             }
             else
             {
@@ -66,7 +76,7 @@ public class GameLogic
         {
             if (bannedItems.Any(p => p.name == ob.name))
             {
-                mistrust = Mathf.Clamp(mistrust - confiscationMistrust, 0f, 1.1f);
+                mistrust -= confiscationMistrust;
             }
             else
             {
@@ -90,12 +100,21 @@ public class GameLogic
         {
             gold += perfectRunGold;
         }
+
+
+        GoldUpdate();
+        MistrustUpdate();
     }
 
     public void PassTheCar()
     {
         if (isPlaying)
+        {
+
             CheckItems(bribeItems.items, entryBox.items, confiscationBox.items);
+            CarArrived();
+
+        }
     }
 
     public void DayStart()
@@ -109,7 +128,7 @@ public class GameLogic
         Debug.Log(itemIndexes.Print());
 
         gameManager.uIManager.dropDownView.itemDatas = bannedItems;
-        gameManager.uIManager.dropDownView.GenerateListView();
+        gameManager.uIManager.dropDownView.GenerateListView(gameManager.uIManager);
         CarArrived();
 
         gameManager.uIManager.timer.SetTimer(time);
@@ -121,7 +140,24 @@ public class GameLogic
     public void DayEnd()
     {
         Debug.Log("DayEnd");
+
         isPlaying = false;
+
+
+        if (mistrust + hidenMistrust > 1f)
+        {
+            onLose?.Invoke();
+        }
+        else
+            onDayEnd?.Invoke();
+    }
+
+    public void DailyUpdate()
+    {
+        day++;
+        mistrust -= daylyMistrustDecrease;
+
+        DayStart();
     }
 
     public void CarArrived()
@@ -129,6 +165,9 @@ public class GameLogic
         int itemsCount = UnityEngine.Random.Range(4, 8);
         int[] itemIds = gameManager.gameItems.items.GetUniqueIndexes(itemsCount);
 
+        entryBox.Clear();
+        confiscationBox.Clear();
+        bribeItems.Clear();
 
         for (int i = 0; i < itemsCount; i++)
         {
@@ -143,14 +182,14 @@ public class GameLogic
             entryBox.ItemPlaced(entity);
             entity.transform.position = gameManager.converter.RandomPositionInSquare(entryBox.transform, -0.01f);
 
-            entity.SetTexture(itemDataByName[item.name].sprite.texture);
+            entity.SetTexture(itemDataByName[item.name].texture);
         }
     }
 
     public void MistrustUpdate()
     {
-        gameManager.uIManager.mistrustSlider.value = mistrust;
-        gameManager.uIManager.mistrustText.text = (mistrust * 100f).ToString() + "%";
+        Debug.Log("misstrust update");
+        gameManager.uIManager.misstrust.SetValue(mistrust, hidenMistrust);
     }
 
     public void GoldUpdate()
@@ -165,8 +204,7 @@ public class GameLogic
             itemDataByName.Add(ob.name, ob);
         }
 
-        MistrustUpdate();
-        GoldUpdate();
+
 
         //Vector3 root = new Vector3(0, 0, 0);
 
@@ -186,9 +224,12 @@ public class GameLogic
         bribeItems.transform.localScale = gameManager.converter.DefineScale(new Vector3(0.2f, 0.2f, 1f));
 
         gameManager.uIManager.windowPainController.MoveToWindow();
+
+        gameManager.uIManager.misstrust.SetValue(mistrust, hidenMistrust);
+
+        MistrustUpdate();
+        GoldUpdate();
     }
-
-
 
     public void OnTimeUp()
     {
@@ -198,6 +239,6 @@ public class GameLogic
 
     public void OnLose()
     {
-
+        Debug.Log("lost");
     }
 }
