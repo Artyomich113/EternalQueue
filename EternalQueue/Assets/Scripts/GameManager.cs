@@ -42,14 +42,18 @@ public class GameManager : MonoBehaviour
 
         uIManager.timer.onTimeOut += gameLogic.OnTimeUp;
         uIManager.submit.onClick.AddListener(gameLogic.PassTheCar);
-        
-        uIManager.nextDay.onClick.AddListener(NextDayHandler);
-        uIManager.nextDay.onClick.AddListener(gameLogic.DailyUpdate);
 
+        uIManager.nextDay.onClick.AddListener(NextDayHandler);
         void NextDayHandler()
         {
             uIManager.nextDay.gameObject.SetActive(false);
         };
+
+        uIManager.nextDay.onClick.AddListener(gameLogic.DailyUpdate);
+
+        uIManager.home.button.onClick.AddListener(gameLogic.HomeIncrement);
+        uIManager.food.button.onClick.AddListener(gameLogic.FoodIncrement);
+        uIManager.family.button.onClick.AddListener(gameLogic.FamilyIncrement);
     }
 
     public void ChangeGuy()

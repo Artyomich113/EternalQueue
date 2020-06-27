@@ -186,6 +186,21 @@ public class GameLogic
         }
     }
 
+    public void FoodIncrement()
+    {
+        Debug.Log("FoodIncrement");
+    }
+    public void FamilyIncrement()
+    {
+        Debug.Log("FamilyIncrement");
+
+    }
+    public void HomeIncrement()
+    {
+        Debug.Log("HomeIncrement");
+
+    }
+
     public void MistrustUpdate()
     {
         Debug.Log("misstrust update");

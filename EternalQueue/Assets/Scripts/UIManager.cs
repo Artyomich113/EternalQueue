@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour
 
     public Button nextDay;
 
+    public SliderButton home;
+    public SliderButton family;
+    public SliderButton food;
+
     [HideInInspector]
     public Sprite[] entitySprites;
 }
