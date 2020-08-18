@@ -10,11 +10,11 @@ public class WindowPainController : MonoBehaviour
 	public Transform stayTransform;
 	public Transform finaleTransform;
 
-	PooledObject target;
+	PooledObject target = null;
 
 	private void Start()
 	{
-		target = PoolManager.instanse.guyPool.Get();
+		target = PoolManager.instanse.GetPool("guy").Get();
 	}
 
 	private void OnDrawGizmos()

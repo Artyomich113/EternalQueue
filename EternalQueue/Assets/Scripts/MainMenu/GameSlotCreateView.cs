@@ -4,21 +4,49 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GameSlotCreateView : MonoBehaviour, IPointerClickHandler
+public class GameSlotCreateView : MonoBehaviour
 {
-	public System.Action<string> OnGameSlotClickCreate;
+    public System.Action<string> OnGameSlotClickCreate;
 
-	public InputField SlotName;
+    public InputField slotName;
 
-	private void Start()
-	{
-		SlotName.text = "Gamers Game for Gaymers";
-	}
+    public Button createButton;
 
-	public void OnPointerClick(PointerEventData eventData)
-	{
-		Debug.Log("GameSlotCreateView click");
-		OnGameSlotClickCreate?.Invoke(SlotName.text);
-	}
-	
+    private void Start()
+    {
+        slotName.text = "Gamers Game for Gaymers";
+    }
+
+    private void OnEnable()
+    {
+        createButton.onClick.AddListener(OnCreateButtonPressed);
+        slotName.onEndEdit.AddListener(OnEndEdit);
+    }
+
+    private void OnDisable()
+    {
+        createButton.onClick.RemoveListener(OnCreateButtonPressed);
+        slotName.onEndEdit.RemoveListener(OnEndEdit);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+
+    }
+    public void OnCreateButtonPressed()
+    {
+        Debug.Log("GameSlotCreateView click");
+
+        string gameName = slotName.text;
+        if (!string.IsNullOrEmpty(gameName))
+        {
+            OnGameSlotClickCreate?.Invoke(slotName.text);
+        }
+    }
+
+    public void OnEndEdit(string name)
+    {
+        Debug.Log("OnEndEdit " + name);
+    }
+
 }

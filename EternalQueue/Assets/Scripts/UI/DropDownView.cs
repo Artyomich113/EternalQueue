@@ -12,8 +12,9 @@ public class DropDownView : MonoBehaviour, IDragHandler
     public VerticalLayoutGroup verticalLayoutGroup;
 
     public ScrollRect scrollRect;
-
+    [HideInInspector]
     public List<ItemData> itemDatas;
+    [HideInInspector]
     public List<ItemView> itemViews;
 
     public Text dropDownText;

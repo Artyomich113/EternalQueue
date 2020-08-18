@@ -24,7 +24,7 @@ public class ValueItterator : MonoBehaviour
     }
     public void SetEndValue(float val)
     {
-        Debug.Log("Setendvalue " + val);
+        //Debug.Log("Set end value " + val);
         endValue = val;
         if (coroutine == null)
         {
@@ -44,7 +44,7 @@ public class ValueItterator : MonoBehaviour
         {
             float substraction = endValue - value;
             value += Mathf.Sign(substraction) * (speed * Time.deltaTime).GoToFloat(Mathf.Abs(substraction));
-            Debug.Log("value " + value);
+            //Debug.Log("value " + value);
             onValueChanged?.Invoke(value);
             yield return null;
         } while (value != endValue);

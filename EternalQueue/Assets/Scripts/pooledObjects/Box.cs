@@ -33,7 +33,7 @@ public class Box : PooledObject, IInteractive
 
     public void ItemPlaced(Entity item)//mouseUp. Controled in ClickSelectController.
     {
-        if (!items.Contains(item))
+        if (!items.Contains(item) && item != null)
         {
             items.Add(item);
             item.onItemRelesed += ItemRelesed;

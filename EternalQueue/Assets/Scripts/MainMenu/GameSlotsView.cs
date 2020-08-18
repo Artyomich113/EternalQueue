@@ -57,12 +57,17 @@ public class GameSlotsView : MonoBehaviour
         OnDataClickCreate?.Invoke(name);
     }
 
-    public void CreateGameDataSlot(GameData gameData)
+    public void CreateGameDataSlot(GameData gameData, bool preLast = false)
     {
         //Debug.Log("CreateGameDataSlot " + gameData.fileName);
 
         GameSlot gameslot = Instantiate(gameSlotView, content.transform);
         gameslot.gameData = gameData;
+
+        if (preLast)
+        {
+            gameslot.transform.SetSiblingIndex(gameslot.transform.parent.childCount - 2);
+        }
         gameslot.onDataClickDelete += OnDataDelete;
         gameslot.onDataClickSelect += OnDataSelect;
     }

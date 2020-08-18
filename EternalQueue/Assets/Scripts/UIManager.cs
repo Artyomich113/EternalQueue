@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
 
     public Misstrust misstrust;
 
-    public Gold gold;
+    public Text goldText;
 
     public Timer timer;
 
@@ -28,11 +28,15 @@ public class UIManager : MonoBehaviour
 
     public DropDownView dropDownView;
 
-    public Button nextDay;
+    public Button nextDayButton;
+
+    public LosingContainer losingContainer;
 
     public SliderButton home;
     public SliderButton family;
     public SliderButton food;
+
+    public FloatingText floatingText;
 
     [HideInInspector]
     public Sprite[] entitySprites;

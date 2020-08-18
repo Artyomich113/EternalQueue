@@ -38,27 +38,25 @@ public class GameManager : MonoBehaviour
             gameManager = this,
         };
 
+        gameLogic.Bind();
+        //uIManager.losingContainer.button.onClick.AddListener(gameLogic.OnNewGame);
 
+        //uIManager.timer.onTimeOut += gameLogic.OnTimeUp;
+        //uIManager.submit.onClick.AddListener(gameLogic.PassTheCar);
 
-        uIManager.timer.onTimeOut += gameLogic.OnTimeUp;
-        uIManager.submit.onClick.AddListener(gameLogic.PassTheCar);
+        //uIManager.nextDayButton.onClick.AddListener(NextDayHandler);
+        //void NextDayHandler()
+        //{
+        //    uIManager.nextDayButton.gameObject.SetActive(false);
+        //};
 
-        uIManager.nextDay.onClick.AddListener(NextDayHandler);
-        void NextDayHandler()
-        {
-            uIManager.nextDay.gameObject.SetActive(false);
-        };
+        //uIManager.nextDayButton.onClick.AddListener(gameLogic.DailyUpdate);
 
-        uIManager.nextDay.onClick.AddListener(gameLogic.DailyUpdate);
+        //uIManager.home.button.onClick.AddListener(gameLogic.HomeIncrement);
+        //uIManager.food.button.onClick.AddListener(gameLogic.FoodIncrement);
+        //uIManager.family.button.onClick.AddListener(gameLogic.FamilyIncrement);
 
-        uIManager.home.button.onClick.AddListener(gameLogic.HomeIncrement);
-        uIManager.food.button.onClick.AddListener(gameLogic.FoodIncrement);
-        uIManager.family.button.onClick.AddListener(gameLogic.FamilyIncrement);
-    }
-
-    public void ChangeGuy()
-    {
-
+        //gameLogic.showText += uIManager.floatingText.ShowText;
     }
 
     public void StartGame() //вызов запуск игры
@@ -81,7 +79,7 @@ public class GameManager : MonoBehaviour
 
     public void OnUpdateGold(int val)
     {
-        uIManager.gold.text.text = val.ToString();
+        uIManager.goldText.text = val.ToString();
     }
 
     #region Data managment
@@ -112,8 +110,13 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameData created");
         GameLogic.gameData = new GameData(name);
-
         GameData.Save(GameLogic.gameData);
+
+        GameSlotsViewInstace.CreateGameDataSlot(GameLogic.gameData);
+
+        GameSlotsViewInstace.gameObject.SetActive(false);
+        mainMenuInstance.gameObject.SetActive(true);
+
     }
 
     public void SpawnGameSlots() // инициализация загрузки сохранений

@@ -5,31 +5,50 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[Serializable]
+public struct ObjectPoolName
+{
+    public Objectpool pool;
+    public string name;
+}
 public class PoolManager : MonoBehaviour
 {
-	public static PoolManager instanse;
+    public static PoolManager instanse;
 
+    public ObjectPoolName[] objectPoolName;
 
-	public Objectpool boxPool;
-	public Objectpool guyPool;
-	public Objectpool entityPool;
+    Dictionary<string, Objectpool> objectPoolByName = new Dictionary<string, Objectpool>();
 
-	private void Awake()
-	{
-		if (instanse == null)
-		{
-			instanse = this;
-			DontDestroyOnLoad(this);
-		}
-		else
-		{
-			Destroy(this);
-		}
-	}
+    private void Awake()
+    {
+        if (instanse == null)
+        {
+            instanse = this;
+            DontDestroyOnLoad(this);
 
-	private void Start()
-	{
-		
-	}
+            foreach (var ob in objectPoolName)
+            {
+                objectPoolByName.Add(ob.name, ob.pool);
+            }
+            Debug.Log("PoolManager Initialized");
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
+    private void Start()
+    {
+
+    }
+
+    public Objectpool GetPool(string name)
+    {
+        if (objectPoolByName.ContainsKey(name))
+            return objectPoolByName[name];
+        else
+            return null;
+    }
 }
 

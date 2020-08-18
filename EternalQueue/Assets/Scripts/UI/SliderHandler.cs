@@ -9,7 +9,7 @@ public class SliderHandler : ValueItterator
 
     void OnValueChanged(float val)
     {
-        Debug.Log("sliderhandler onvalchanged " + val);
+        //Debug.Log("sliderhandler onvalchanged " + val);
         slider.value = val;
     }
     

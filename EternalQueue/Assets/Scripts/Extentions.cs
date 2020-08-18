@@ -205,16 +205,25 @@ namespace Artyomich
             return horizontalLayoutGroup;
         }
 
-        public static Text CreateText(RectTransform parent, string str, int fontsize, TextAnchor textAnchor, Font font, Color color)
+        public static Text CreateText(RectTransform parent, string str, TextAnchor textAnchor, Font font, Color color, int fontSize = 30)
         {
+            if (color == null)
+                color = Color.green;
+
+            if(font == null)
+            {
+                font = Font.CreateDynamicFontFromOSFont(Font.GetOSInstalledFontNames()[0], fontSize);
+            }
+
             GameObject localGameobject = new GameObject("Text", typeof(RectTransform));
 
             localGameobject.transform.SetParent(parent);
             Text text = localGameobject.AddComponent<Text>();
-            text.text = str;
+            
             text.font = font;
+            text.text = str;
             text.color = color;
-            text.fontSize = fontsize;
+            text.fontSize = fontSize;
             text.raycastTarget = false;
             text.alignment = textAnchor;
             return text;

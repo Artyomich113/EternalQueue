@@ -28,9 +28,10 @@ public class GameSlot : MonoBehaviour, IPointerClickHandler
 	{
 		Debug.Log("OnDataClickDelete");
 		onDataClickDelete?.Invoke(gameData);
+		Destroy(gameObject);
 	}
 
-	private void Start()
+	private void Start() 
 	{
 		gameSlotDeleteView.onClick.AddListener(OnDataClickDelete);
 		fileNameText.text = gameData?.fileName;

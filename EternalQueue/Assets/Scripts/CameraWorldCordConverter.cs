@@ -74,9 +74,9 @@ public class CameraWorldCordConverter : MonoBehaviour
     {
         Vector3 bottomLeft = obTransform.position - (obTransform.localScale / 2).SetZ(0f);
 
-        float height = UnityEngine.Random.Range(0, obTransform.localScale.y);
-        float wight = UnityEngine.Random.Range(0, obTransform.localScale.x);
+        float y = UnityEngine.Random.Range(0, obTransform.localScale.y);
+        float x = UnityEngine.Random.Range(0, obTransform.localScale.x);
 
-        return bottomLeft + new Vector3(wight, height, zOffset);
+        return bottomLeft + new Vector3(x, y, zOffset);
     }
 }
