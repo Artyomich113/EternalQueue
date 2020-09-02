@@ -40,4 +40,6 @@ public class UIManager : MonoBehaviour
 
     [HideInInspector]
     public Sprite[] entitySprites;
+
+    public Text dayCounterText;
 }

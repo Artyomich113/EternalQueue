@@ -4,7 +4,22 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 using UIScripts;
-using System;
+
+//using System;
+//using Newtonsoft.Json;
+//using System.Net;
+//using System.Net.Http;
+//using System.Web;
+//using System.Web.UI;
+//using System.Web.UI.WebControls;
+//public class GooglePlusAccessToken
+//{
+//    public string access_token { get; set; }
+//    public string token_type { get; set; }
+//    public int expires_in { get; set; }
+//    public string id_token { get; set; }
+//    public string refresh_token { get; set; }
+//}
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +33,11 @@ public class GameManager : MonoBehaviour
     public CameraWorldCordConverter converter;
 
     public GameItems gameItems;
+
+    //protected string googleplus_client_id = "458878619548-khuatamj3qpiccnsm4q6dbulf13jumva.apps.googleusercontent.com";    // Replace this with your Client ID
+    //protected string googleplus_client_secret = "4hiVJYlomswRd_PV5lyNQlfN";                                                // Replace this with your Client Secret
+    //protected string googleplus_redirect_url = "http://localhost:2443/Index.aspx";                                         // Replace this with your Redirect URL; Your Redirect URL from your developer.google application should match this URL.
+    //protected string Parameters;
 
     void Start()
     {

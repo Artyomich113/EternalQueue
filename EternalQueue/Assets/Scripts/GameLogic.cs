@@ -40,8 +40,7 @@ public class GameLogic
     /// </summary>
     Action onDayEnd;
 
-
-    Action onLose;
+    Action<string> onLose;
 
     Action onNewGame;
 
@@ -55,7 +54,7 @@ public class GameLogic
     /// value beetwen 0 and 1
     /// </summary>
 
-    int day = 0;
+    int day = 1;
     float mistrust = 0f;
 
     float hidenMistrust = 0f;
@@ -70,9 +69,6 @@ public class GameLogic
     int foodCap = maxCap;
     int familyCap = maxCap;
     const int maxCap = 3;
-
-
-
 
     const int brabeGold = 200;
     const int perfectRunGold = 100;
@@ -111,7 +107,8 @@ public class GameLogic
                 message += " +" + brabeMistrust;
             }
         }
-        Debug.Log(message);
+        if (bribeItems.Count > 0)
+            Debug.Log(message);
 
         message = "confiscated items: ";
         foreach (var ob in confiscatedItems)
@@ -132,7 +129,8 @@ public class GameLogic
                 message += " +" + brabeMistrust;
             }
         }
-        Debug.Log(message);
+        if (confiscatedItems.Count > 0)
+            Debug.Log(message);
 
         message = "passed items: ";
         foreach (var ob in passedItems)
@@ -147,7 +145,8 @@ public class GameLogic
             }
 
         }
-        Debug.Log(message);
+        if (passedItems.Count > 0)
+            Debug.Log(message);
 
         Debug.Log("mistrust = " + mistrust + " hidenMistrust = " + hidenMistrust);
 
@@ -169,7 +168,7 @@ public class GameLogic
         gold = 500;
         mistrust = 0;
         hidenMistrust = 0;
-        day = 0;
+        day = 1;
     }
 
     public void Bind()
@@ -195,7 +194,8 @@ public class GameLogic
 
         showText += uIManager.floatingText.ShowText;
 
-        onDayEnd += DayStart;
+        //onDayEnd += DayStart;
+        onDayEnd += DailyUpdate;
 
         onLose += OnLose;
     }
@@ -242,26 +242,26 @@ public class GameLogic
         Debug.Log("DayEnd");
 
         isPlaying = false;
-        
+
         foodCap--;
         homeCap--;
         familyCap--;
 
         if (foodCap <= 0)
         {
-            onLose.Invoke();
+            onLose.Invoke("your family got hungry and abandoned you. Then you have lost your mind and joined spetial police forces");
         }
         else if (homeCap <= 0)
         {
-            onLose.Invoke();
+            onLose.Invoke("your family got no money to pay home rent, so they moved to parents, and abandon you.");
         }
         else if (familyCap <= 0)
         {
-            onLose.Invoke();
+            onLose.Invoke("your family got baraly enought money to enjoy themself, so you lost them");
         }
         else if (mistrust + hidenMistrust > 1f)
         {
-            onLose?.Invoke();
+            onLose?.Invoke("you got arrested for violating law on carriage of goods");
         }
         else
             onDayEnd?.Invoke();
@@ -274,6 +274,8 @@ public class GameLogic
     public void DailyUpdate()
     {
         day++;
+        DayUpdate();
+
         mistrust -= daylyMistrustDecrease;
 
         DayStart();
@@ -311,6 +313,11 @@ public class GameLogic
                 entity.SetTexture(new Texture2D(128, 128));
             }
         }
+    }
+
+    public void DayUpdate()
+    {
+        gameManager.uIManager.dayCounterText.text = "Day " + day;
     }
     public void IconsUpdate()
     {
@@ -403,6 +410,7 @@ public class GameLogic
         IconsUpdate();
         MistrustUpdate();
         GoldUpdate();
+        DayUpdate();
     }
 
     public void OnTimeUp()
@@ -411,8 +419,8 @@ public class GameLogic
         Debug.Log("Time up");
     }
 
-    public void OnLose()
+    public void OnLose(string message)
     {
-        Debug.Log("lost");
+        Debug.Log("lost with message " + message);
     }
 }
