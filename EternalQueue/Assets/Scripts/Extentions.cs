@@ -41,7 +41,16 @@ namespace Artyomich
         {
             return (val % val2);
         }
-
+        /// <summary>
+        /// adds value to r,g,b channels
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static Color Add(this Color color, float val)
+        {
+            return new Color(color.r + val, color.g + val, color.b + val, color.a);
+        }
         public static Color SetA(this Color color, float val)
         {
             return new Color(color.r, color.g, color.b, val);

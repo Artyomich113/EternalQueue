@@ -8,6 +8,8 @@ public class SliderButton : MonoBehaviour
 
     public Button button;
 
+    public Text buttonText;
+
     public SliderHandler sliderHandler;
 
 }

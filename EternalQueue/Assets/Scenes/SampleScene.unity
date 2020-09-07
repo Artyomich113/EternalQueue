@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 20298426}
+  buttonText: {fileID: 331258369}
   sliderHandler: {fileID: 5711935}
 --- !u!1 &7887942
 GameObject:
@@ -1907,6 +1908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 995505288}
+  buttonText: {fileID: 242912339}
   sliderHandler: {fileID: 602319062}
 --- !u!1 &617792675
 GameObject:
@@ -2880,6 +2882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 235511925}
+  buttonText: {fileID: 772086226}
   sliderHandler: {fileID: 793450812}
 --- !u!1 &816518420
 GameObject:
@@ -4946,6 +4949,7 @@ MonoBehaviour:
   uIManager: {fileID: 2072881101}
   converter: {fileID: 1783418380}
   gameItems: {fileID: 11400000, guid: 4efffad5d21461c41a384ae502b66512, type: 2}
+  gameSettings: {fileID: 11400000, guid: f0a7aae6c24740a42813e76de0e0909b, type: 2}
 --- !u!4 &1939119893
 Transform:
   m_ObjectHideFlags: 0

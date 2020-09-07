@@ -32,7 +32,6 @@ public class GameLogic
 
     Dictionary<string, ItemData> itemDataByName = new Dictionary<string, ItemData>();
 
-
     /// <summary>
     /// day ended succesfully without losing
     /// </summary>
@@ -55,36 +54,24 @@ public class GameLogic
     /// </summary>
 
     int day = 1;
+    float gold = 500f;
     float mistrust = 0f;
-
     float hidenMistrust = 0f;
 
-    float gold = 500f;
+    int homeCap = 1;
+    int foodCap = 1;
+    int familyCap = 1;
 
-    const int homeCost = 350;
-    const int foodCost = 350;
-    const int familyCost = 300;
-
-    int homeCap = maxCap;
-    int foodCap = maxCap;
-    int familyCap = maxCap;
-    const int maxCap = 3;
-
-    const int brabeGold = 200;
-    const int perfectRunGold = 100;
-
-
-    const float brabeMistrust = 0.2f;
-    const float firstMistakeMistrust = 0.1f;
-    const float mistakeMistrust = 0.05f;
-    const float daylyMistrustDecrease = 0.2f;
-
-    const float confiscationMistrust = 0.02f;
-
+    GameSettingsData gameSettingsData;
+    
     bool isPlaying;
 
-    const float timePerDay = 60;
 
+    public GameLogic(GameManager gameManager, GameSettings gameSettings)
+    {
+        this.gameManager = gameManager;
+        this.gameSettingsData = new GameSettingsData(gameSettings.data);
+    }
     public void CheckItems(List<Entity> bribeItems, List<Entity> passedItems, List<Entity> confiscatedItems)
     {
         bool perfectRunCheck = true;
@@ -94,17 +81,18 @@ public class GameLogic
             message += ", " + ob.item.name;
             if (bannedItems.Any(p => p.name == ob.item.name))
             {
-                gold += brabeGold;
+                gold += gameSettingsData.bribeGold;
 
-                hidenMistrust += brabeMistrust;
-                showText?.Invoke(brabeMistrust * 100, Color.red, ob.gameObject.transform.position);
+                MistrustIncrement(gameSettingsData.bannedItemInbrabeBoxMistrust);
+                
+                showText?.Invoke(gameSettingsData.bannedItemInbrabeBoxMistrust * 100, Color.red.Add(-0.2f), ob.gameObject.transform.position);
             }
             else
             {
-                mistrust += brabeMistrust;
-                showText?.Invoke(brabeMistrust * 100, Color.red, ob.gameObject.transform.position);
-
-                message += " +" + brabeMistrust;
+                MistrustIncrement(gameSettingsData.normalItemInBrabeBoxMistrust);
+                
+                showText?.Invoke(gameSettingsData.bannedItemInbrabeBoxMistrust * 100, Color.red.Add(-0.2f), ob.gameObject.transform.position);
+                message += " +" + gameSettingsData.bannedItemInbrabeBoxMistrust;
             }
         }
         if (bribeItems.Count > 0)
@@ -116,17 +104,20 @@ public class GameLogic
             message += ", " + ob.item.name;
             if (bannedItems.Any(p => p.name == ob.item.name))
             {
-                mistrust = Mathf.Clamp(mistrust - confiscationMistrust, 0f, 1.0f);
-                showText?.Invoke(-confiscationMistrust * 100, Color.green, ob.gameObject.transform.position);
+                MistrustIncrement(gameSettingsData.bannedItemInconfiscationBoxMistrust);
 
-                message += " -" + confiscationMistrust;
+                showText?.Invoke(-gameSettingsData.bannedItemInconfiscationBoxMistrust * 100, Color.green, ob.gameObject.transform.position);
+
+                message += " -" + gameSettingsData.bannedItemInconfiscationBoxMistrust;
             }
             else
             {
-                mistrust += brabeMistrust;
-                showText?.Invoke(brabeMistrust * 100, Color.red, ob.gameObject.transform.position);
+                MistrustIncrement(gameSettingsData.normalItemInBrabeBoxMistrust);
 
-                message += " +" + brabeMistrust;
+                mistrust += gameSettingsData.bannedItemInbrabeBoxMistrust;
+                showText?.Invoke(gameSettingsData.bannedItemInbrabeBoxMistrust * 100, Color.red, ob.gameObject.transform.position);
+
+                message += " +" + gameSettingsData.bannedItemInbrabeBoxMistrust;
             }
         }
         if (confiscatedItems.Count > 0)
@@ -138,10 +129,14 @@ public class GameLogic
             message += ", " + ob.item.name;
             if (bannedItems.Any(p => p.name == ob.item.name))
             {
-                mistrust = Mathf.Clamp(mistrust + confiscationMistrust, 0f, 1.0f);
-                showText.Invoke(confiscationMistrust * 100, Color.red, ob.gameObject.transform.position);
+                MistrustIncrement(gameSettingsData.bannedItemInPassBoxMistrust);
+                showText.Invoke(gameSettingsData.bannedItemInconfiscationBoxMistrust * 100, Color.red, ob.gameObject.transform.position);
 
-                message += " +" + confiscationMistrust;
+                message += " +" + gameSettingsData.bannedItemInconfiscationBoxMistrust;
+            }
+            else
+            {
+                MistrustIncrement(gameSettingsData.normalItemInPassBoxMistrust);
             }
 
         }
@@ -152,21 +147,27 @@ public class GameLogic
 
         if (perfectRunCheck)
         {
-            gold += perfectRunGold;
+            gold += gameSettingsData.perfectRunGold;
         }
 
         GoldUpdate();
         MistrustUpdate();
     }
 
+    void MistrustIncrement(float value)
+    {
+        mistrust += value;
+        if (mistrust < 0f)
+            mistrust = 0f;
+    }
     public void OnNewGame()
     {
-        homeCap = maxCap;
-        foodCap = maxCap;
-        familyCap = maxCap;
+        homeCap = gameSettingsData.maxCap;
+        foodCap = gameSettingsData.maxCap;
+        familyCap = gameSettingsData.maxCap;
 
-        gold = 500;
-        mistrust = 0;
+        gold = gameSettingsData.startGold;
+        mistrust = gameSettingsData.startMistrust;
         hidenMistrust = 0;
         day = 1;
 
@@ -189,13 +190,6 @@ public class GameLogic
         uIManager.timer.onTimeOut += OnTimeUp;
         uIManager.submit.onClick.AddListener(PassTheCar);
 
-        uIManager.nextDayButton.onClick.AddListener(NextDayHandler);
-        void NextDayHandler()
-        {
-            uIManager.nextDayButton.gameObject.SetActive(false);
-        };
-
-        uIManager.nextDayButton.onClick.AddListener(DailyUpdate);
 
         uIManager.home.button.onClick.AddListener(HomeIncrement);
         uIManager.food.button.onClick.AddListener(FoodIncrement);
@@ -203,8 +197,22 @@ public class GameLogic
 
         showText += uIManager.floatingText.ShowText;
 
+        uIManager.nextDayButton.onClick.AddListener(DayStart);//
+
+        uIManager.nextDayButton.onClick.AddListener(HideNextDayButton);
+
         //onDayEnd += DayStart;
-        onDayEnd += DailyUpdate;
+        void HideNextDayButton()
+        {
+            uIManager.nextDayButton.gameObject.SetActive(false);
+        }
+
+        void ShowNextDayButton()
+        {
+            uIManager.nextDayButton.gameObject.SetActive(true);
+        }
+
+        onDayEnd += ShowNextDayButton;//DailyUpdate;
 
         onLose += OnLose;
 
@@ -248,8 +256,8 @@ public class GameLogic
         gameManager.uIManager.dropDownView.GenerateListView(gameManager.uIManager);
         CarArrived();
 
-        gameManager.uIManager.timer.SetTimer(timePerDay);
-        gameManager.uIManager.timer.StartTimer();
+        timer.SetTimer(gameSettingsData.timePerDay);
+        timer.StartTimer();
 
         isPlaying = true;
     }
@@ -262,7 +270,7 @@ public class GameLogic
 
         foodCap--;
         homeCap--;
-         familyCap--;
+        familyCap--;
 
         if (foodCap <= 0)
         {
@@ -293,7 +301,7 @@ public class GameLogic
         day++;
         DayUpdate();
 
-        mistrust -= daylyMistrustDecrease;
+        mistrust -= gameSettingsData.daylyMistrustDecrease;
 
         DayStart();
     }
@@ -338,45 +346,48 @@ public class GameLogic
     }
     public void IconsUpdate()
     {
-        gameManager.uIManager.food.sliderHandler.SetEndValue((float)foodCap / maxCap);
-        gameManager.uIManager.family.sliderHandler.SetEndValue((float)familyCap / maxCap);
-        gameManager.uIManager.home.sliderHandler.SetEndValue((float)homeCap / maxCap);
+        gameManager.uIManager.food.sliderHandler.SetEndValue((float)foodCap / gameSettingsData.maxCap);
+        gameManager.uIManager.family.sliderHandler.SetEndValue((float)familyCap / gameSettingsData.maxCap);
+        gameManager.uIManager.home.sliderHandler.SetEndValue((float)homeCap / gameSettingsData.maxCap);
 
+        gameManager.uIManager.food.buttonText.text = gameSettingsData.foodCost.ToString();
+        gameManager.uIManager.family.buttonText.text = gameSettingsData.familyCost.ToString();
+        gameManager.uIManager.home.buttonText.text = gameSettingsData.homeCost.ToString();
     }
 
     public void FoodIncrement()
     {
-        if (foodCap < maxCap && gold >= foodCost)
+        if (foodCap < gameSettingsData.maxCap && gold >= gameSettingsData.foodCost)
         {
             foodCap++;
-            gold -= foodCost;
+            gold -= gameSettingsData.foodCost;
         }
-        gameManager.uIManager.food.sliderHandler.SetEndValue((float)foodCap / maxCap);
-        //Debug.Log("FoodIncrement");
+        gameManager.uIManager.food.sliderHandler.SetEndValue((float)foodCap / gameSettingsData.maxCap);
+        
         GoldUpdate();
     }
     public void FamilyIncrement()
     {
-        if (familyCap < maxCap && gold >= familyCost)
+        if (familyCap < gameSettingsData.maxCap && gold >= gameSettingsData.familyCost)
         {
 
-            gold -= familyCost;
+            gold -= gameSettingsData.familyCost;
             familyCap++;
         }
-        gameManager.uIManager.family.sliderHandler.SetEndValue((float)familyCap / maxCap);
+        gameManager.uIManager.family.sliderHandler.SetEndValue((float)familyCap / gameSettingsData.maxCap);
         //Debug.Log("FamilyIncrement");
         GoldUpdate();
 
     }
     public void HomeIncrement()
     {
-        if (homeCap < maxCap && gold >= homeCost)
+        if (homeCap < gameSettingsData.maxCap && gold >= gameSettingsData.homeCost)
         {
 
             homeCap++;
-            gold -= homeCost;
+            gold -= gameSettingsData.homeCost;
         }
-        gameManager.uIManager.home.sliderHandler.SetEndValue((float)homeCap / maxCap);
+        gameManager.uIManager.home.sliderHandler.SetEndValue((float)homeCap / gameSettingsData.maxCap);
         //Debug.Log("HomeIncrement");
         GoldUpdate();
 
@@ -424,12 +435,16 @@ public class GameLogic
         gameManager.uIManager.windowPainController.MoveToWindow();
         gameManager.uIManager.misstrust.SetValue(mistrust, hidenMistrust);
 
-        IconsUpdate();
-        MistrustUpdate();
-        GoldUpdate();
-        DayUpdate();
-    }
+        //IconsUpdate();
+        //MistrustUpdate();
+        //GoldUpdate();
+        //DayUpdate();
 
+        updateUI?.Invoke();
+    }
+    /// <summary>
+    /// timer times up
+    /// </summary>
     public void OnTimeUp()
     {
         DayEnd();
