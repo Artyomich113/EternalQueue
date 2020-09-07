@@ -41,6 +41,9 @@ public class Box : PooledObject, IInteractive
 
     }
 
+    /// <summary>
+    /// clears items(entitys) in box
+    /// </summary>
     public void Clear()
     {
         foreach(var item in items)

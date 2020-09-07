@@ -27,9 +27,7 @@ public class GameLogic
     public List<ItemData> bannedItems = new List<ItemData>();
 
     Box passBox;
-
     Box confiscationBox;
-
     Box bribeBox;
 
     Dictionary<string, ItemData> itemDataByName = new Dictionary<string, ItemData>();
@@ -43,6 +41,8 @@ public class GameLogic
     Action<string> onLose;
 
     Action onNewGame;
+
+    Action updateUI;
 
     /// <summary>
     /// Value, Color, position
@@ -169,6 +169,13 @@ public class GameLogic
         mistrust = 0;
         hidenMistrust = 0;
         day = 1;
+
+        passBox.Clear();
+        bribeBox.Clear();
+        confiscationBox.Clear();
+
+        DayStart();
+        updateUI?.Invoke();
     }
 
     public void Bind()
@@ -176,6 +183,8 @@ public class GameLogic
         UIManager uIManager = gameManager.uIManager;
 
         uIManager.losingContainer.button.onClick.AddListener(OnNewGame);
+        onLose += uIManager.losingContainer.Appear;
+
 
         uIManager.timer.onTimeOut += OnTimeUp;
         uIManager.submit.onClick.AddListener(PassTheCar);
@@ -198,6 +207,11 @@ public class GameLogic
         onDayEnd += DailyUpdate;
 
         onLose += OnLose;
+
+        updateUI += GoldUpdate;
+        updateUI += MistrustUpdate;
+        updateUI += DayUpdate;
+        updateUI += IconsUpdate;
     }
 
     public void PassTheCar()
@@ -210,6 +224,9 @@ public class GameLogic
         }
     }
 
+    /// <summary>
+    /// sets items, starts timer
+    /// </summary>
     public void DayStart()
     {
         bannedItems.RemoveRange(0, bannedItems.Count);
@@ -245,7 +262,7 @@ public class GameLogic
 
         foodCap--;
         homeCap--;
-        familyCap--;
+         familyCap--;
 
         if (foodCap <= 0)
         {
@@ -367,7 +384,7 @@ public class GameLogic
 
     public void MistrustUpdate()
     {
-        Debug.Log("misstrust update");
+        //Debug.Log("misstrust update");
         gameManager.uIManager.misstrust.SetValue(mistrust, hidenMistrust);
     }
 

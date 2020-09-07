@@ -47,7 +47,7 @@ namespace UIScripts
 
         public void SetValue(float value, float hidenValue)
         {
-            Debug.Log("mistrust set value");
+            //Debug.Log("mistrust set value");
             hidenMistrustValue = hidenValue;
 
             sliderHandler.SetEndValue(value);
